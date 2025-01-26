@@ -1,0 +1,40 @@
+<div class="flex flex-col gap-1 p-2">
+	<div class="flex flex-row items-center justify-start gap-2">
+		<button (click)="previousYear()"><<</button>
+		<button (click)="previousMonth()"><</button>
+		<div>
+			{{ this.calendarView().monthName }} {{ this.calendarView().year }}
+		</div>
+
+		<button (click)="setToday()">Today</button>
+		<button (click)="nextMonth()">></button>
+		<button (click)="nextYear()">>></button>
+	</div>
+	@for (week of this.calendarView().weeks; track $index) {
+		<div
+			class="grid-col-8 grid grid-flow-col grid-rows-1 justify-start gap-2">
+			<div
+				class="flex w-8 items-center justify-center text-sm font-semibold text-gray-600">
+				{{ week.weekNumber }}
+			</div>
+			@for (day of week.days; track $index) {
+				<div
+					[ngClass]="{
+						'!text-blue-500': day?.isToday,
+						'bg-gray-500/50': day?.busy && !day?.isCurrentMonth,
+						'bg-gray-500/70 hover:bg-gray-500/80':
+							day?.busy && day?.isCurrentMonth,
+						'text-gray-400': !day?.isCurrentMonth,
+						'font-semibold text-red-500':
+							day?.isWeekend && day?.isCurrentMonth,
+						'font-semibold text-red-500/50':
+							day?.isWeekend && !day?.isCurrentMonth,
+						'cursor-pointer hover:bg-gray-300': day?.isCurrentMonth,
+					}"
+					class="flex h-12 w-12 items-center justify-center rounded-sm bg-gray-200 transition-colors select-none">
+					{{ day?.dayOfMonth }}
+				</div>
+			}
+		</div>
+	}
+</div>
